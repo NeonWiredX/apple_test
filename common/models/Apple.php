@@ -19,9 +19,9 @@ use yii\db\ActiveRecord;
  */
 class Apple extends ActiveRecord
 {
-    const ROTTEN_AFTER_HOURS = 5;
+    public const ROTTEN_AFTER_HOURS = 5;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['color'], 'required'],
@@ -30,7 +30,9 @@ class Apple extends ActiveRecord
         ];
     }
 
-
+    /**
+     * @return AppleStatus
+     */
     public function getStatus(): AppleStatus
     {
         if ($this->eaten_percent == 1.0) {
@@ -48,6 +50,11 @@ class Apple extends ActiveRecord
         return AppleStatus::OnTree;
     }
 
+    /**
+     * @return Apple
+     *
+     * @throws CantFallException
+     */
     public function fallToGround(): Apple
     {
         if ($this->fell_at) {
@@ -59,6 +66,12 @@ class Apple extends ActiveRecord
         return $this;
     }
 
+    /**
+     * @param int $percent
+     * @return Apple
+     *
+     * @throws CantEatException
+     */
     public function eat(int $percent): Apple
     {
         if (!$this->fell_at) {
@@ -72,8 +85,26 @@ class Apple extends ActiveRecord
         return $this;
     }
 
+    /**
+     * @return float
+     */
     public function getSize(): float
     {
         return 1.0 - $this->eaten_percent;
+    }
+
+    /**
+     * @return bool
+     *
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function delete(): bool
+    {
+        if ($this->status !== AppleStatus::Eaten) {
+            return false;
+        }
+
+        return (bool)parent::delete();
     }
 }

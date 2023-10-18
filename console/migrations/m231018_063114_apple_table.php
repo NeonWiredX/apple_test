@@ -27,7 +27,7 @@ class m231018_063114_apple_table extends Migration
             'id' => $this->primaryKey(),
             'color' => $this->string()->notNull(),
             'fell_at' => $this->dateTime(),
-            'eaten_percent' => $this->decimal(3, 2),
+            'eaten_percent' => $this->decimal(3, 2)->defaultValue(0.0),
             'created_at' => $this->dateTime()->comment('По сути не нужно'),
         ]);
     }

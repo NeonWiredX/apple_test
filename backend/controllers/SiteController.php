@@ -2,8 +2,11 @@
 
 namespace backend\controllers;
 
+use common\models\Apple;
+use common\models\AppleGenerator;
 use common\models\LoginForm;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -28,7 +31,6 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -38,6 +40,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
+                    'apple-action' => ['post'],
                 ],
             ],
         ];
@@ -62,7 +65,24 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if ($number = Yii::$app->request->post('num_apples')) {
+            $result = AppleGenerator::generate($number);
+            if (!$result) {
+                Yii::$app->getSession()->addFlash('error', 'Не удалось сгенерировать яблоки');
+            }
+        }
+
+        $provider = new ActiveDataProvider([
+            'query' => Apple::find()->where(['<', 'eaten_percent', 1.0]),
+            'pagination' => false, // надо вывести все по тз
+        ]);
+
+        return $this->render('index', ['provider' => $provider]);
+    }
+
+    public function actionAppleAction(string $action, int $id)
+    {
+
     }
 
     /**
