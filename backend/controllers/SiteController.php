@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\AppleAction;
 use common\models\Apple;
 use common\models\AppleGenerator;
 use common\models\LoginForm;
@@ -80,9 +81,25 @@ class SiteController extends Controller
         return $this->render('index', ['provider' => $provider]);
     }
 
-    public function actionAppleAction(string $action, int $id)
+    public function actionAppleAction()
     {
+        $action = new AppleAction();
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
+        if (
+            $action->load(Yii::$app->request->post(), '') &&
+            $action->validate()
+        ) {
+            if ($action->handle()) {
+                return true;
+            }
+
+            Yii::$app->response->setStatusCode(400);
+            return $action->getJsonErrors();
+        }
+
+        Yii::$app->response->setStatusCode(400);
+        return $action->getJsonErrors();
     }
 
     /**

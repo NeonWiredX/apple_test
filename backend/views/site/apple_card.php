@@ -13,7 +13,7 @@ use yii\web\View;
     <div class="col-md-6">
         <?= Html::a('Упасть', null, [
             'style' => 'cursor:pointer',
-            'class' => 'btn btn-success',
+            'class' => 'btn btn-success btn-fall',
             'data-id' => $model->id,
         ]);
         ?>
@@ -21,7 +21,7 @@ use yii\web\View;
     <div class="col-md-6">
         <?= Html::a('Удалить', null, [
             'style' => 'cursor:pointer',
-            'class' => 'btn btn-warning',
+            'class' => 'btn btn-warning btn-delete',
             'data-id' => $model->id,
         ]);
         ?>
@@ -29,10 +29,10 @@ use yii\web\View;
 </div>
 <div class="row">
     <div class="col-md-12">
-        <?= Html::input('number', 'eat_percent', '', ['min' => 1, 'max' => 100, 'style' => 'width: 60%']) ?>
+        <?= Html::input('number', 'eat_percent', '', ['class' => 'eat_percent', 'min' => 1, 'max' => 100, 'style' => 'width: 60%']) ?>
         <?= Html::a('Съесть', null, [
             'style' => 'cursor:pointer',
-            'class' => 'btn btn-info',
+            'class' => 'btn btn-info btn-eat',
             'data-id' => $model->id,
         ]);
         ?>

@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\enums\AppleStatus;
+use common\exceptions\CantDeleteException;
 use common\exceptions\CantEatException;
 use common\exceptions\CantFallException;
 use yii\db\ActiveRecord;
@@ -102,7 +103,7 @@ class Apple extends ActiveRecord
     public function delete(): bool
     {
         if ($this->status !== AppleStatus::Eaten) {
-            return false;
+            throw new CantDeleteException('you cant delete only eaten apple');
         }
 
         return (bool)parent::delete();

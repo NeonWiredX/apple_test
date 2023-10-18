@@ -4,13 +4,22 @@
 
 /** @var \yii\data\ActiveDataProvider $provider */
 
+use yii\bootstrap5\Modal;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 
+$this->render('_grid_js');
 $this->title = 'Apple test';
 ?>
 <div class="site-index">
+
+    <?= Modal::widget([
+        'id' => 'error-modal',
+        'title' => 'Возникли ошибки'
+    ]);
+    ?>
+
     <div class="body-content">
         <div id="generator" class="box">
             <?= Html::beginForm() ?>
